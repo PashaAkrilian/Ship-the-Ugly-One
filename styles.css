@@ -30,6 +30,48 @@ a {
   color: var(--accent);
 }
 
+/* global site nav, same on every page: brand on the left, links on the right */
+.site-nav {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  max-width: 880px;
+  margin: 0 auto;
+  padding: 24px;
+}
+
+.site-nav-brand {
+  font-family: var(--font-heading);
+  font-weight: 600;
+  font-size: 1rem;
+  color: var(--text);
+  text-decoration: none;
+}
+
+.site-nav-brand:hover,
+.site-nav-brand:focus-visible {
+  color: var(--accent);
+}
+
+.site-nav-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+
+.site-nav-links a {
+  color: var(--muted);
+  font-size: 0.9rem;
+  text-decoration: none;
+}
+
+.site-nav-links a:hover,
+.site-nav-links a:focus-visible {
+  color: var(--accent);
+}
+
 /* pill-shaped label, used for eyebrow text and status badges */
 .pill {
   display: inline-block;

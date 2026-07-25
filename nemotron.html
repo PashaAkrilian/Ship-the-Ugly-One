@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NVIDIA Nemotron Reasoning — Case Study — Dimas Pasha</title>
+<meta name="description" content="Stratified Chain-of-Thought sampling that cuts LoRA fine-tuning gradient variance by 83% on a 30B-parameter Nemotron model under constrained GPU hardware.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+<style>
+  .case {
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 32px 24px 60px;
+  }
+
+  .case-header {
+    margin: 0 0 36px;
+  }
+
+  .case-header .pill {
+    margin-bottom: 18px;
+  }
+
+  .case-header h1 {
+    font-family: var(--font-heading);
+    font-size: clamp(2rem, 5vw, 2.8rem);
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    margin: 0 0 14px;
+  }
+
+  .case-subtitle {
+    font-size: 1.1rem;
+    line-height: 1.6;
+    color: var(--text);
+    margin: 0 0 16px;
+  }
+
+  .case-meta {
+    font-size: 0.9rem;
+    color: var(--muted);
+  }
+
+  .case-meta a {
+    color: var(--muted);
+    text-decoration: underline;
+    text-decoration-color: rgba(255, 255, 255, 0.2);
+  }
+
+  .case-meta a:hover,
+  .case-meta a:focus-visible {
+    color: var(--accent);
+    text-decoration-color: var(--accent);
+  }
+
+  .beat {
+    margin: 44px 0;
+  }
+
+  .beat-num {
+    display: block;
+    font-family: var(--font-heading);
+    font-size: 0.78rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 10px;
+  }
+
+  .beat h2 {
+    font-family: var(--font-heading);
+    font-size: 1.5rem;
+    margin: 0 0 16px;
+  }
+
+  .beat p {
+    line-height: 1.75;
+    color: var(--text);
+    margin: 0 0 16px;
+  }
+
+  .beat ul {
+    margin: 0 0 16px;
+    padding-left: 20px;
+    line-height: 1.75;
+  }
+
+  .beat li {
+    margin-bottom: 8px;
+  }
+
+  .table-scroll {
+    overflow-x: auto;
+    margin: 8px 0 4px;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 10px;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.88rem;
+    min-width: 480px;
+  }
+
+  th, td {
+    text-align: left;
+    padding: 10px 14px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    vertical-align: top;
+  }
+
+  tr:last-child td {
+    border-bottom: none;
+  }
+
+  th {
+    font-family: var(--font-heading);
+    font-size: 0.7rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+
+  td {
+    color: var(--text);
+  }
+
+  .delta {
+    color: var(--accent);
+    font-family: var(--font-heading);
+    font-weight: 600;
+  }
+
+  .case-cta {
+    text-align: center;
+    margin: 56px 0 44px;
+    padding: 36px 24px;
+    border: 1px solid var(--circuit);
+    border-radius: 14px;
+    background: rgba(36, 66, 94, 0.12);
+  }
+
+  .case-cta h2 {
+    font-family: var(--font-heading);
+    font-size: 1.4rem;
+    margin: 0 0 10px;
+  }
+
+  .case-cta p {
+    color: var(--muted);
+    line-height: 1.6;
+    margin: 0 0 22px;
+  }
+
+  .more-work h2 {
+    font-family: var(--font-heading);
+    font-size: 0.78rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin: 0 0 14px;
+  }
+</style>
+</head>
+<body>
+  <nav class="site-nav">
+    <a class="site-nav-brand" href="index.html">Dimas Pasha</a>
+    <div class="site-nav-links">
+      <a href="index.html">Home</a>
+      <a href="ecosentra.html">EcoSentra</a>
+      <a href="siaga.html">SIAGA</a>
+      <a href="nemotron.html">NVIDIA Nemotron</a>
+      <a href="mailto:dimaspasha49@gmail.com">Contact</a>
+    </div>
+  </nav>
+
+  <main class="case">
+    <header class="case-header">
+      <span class="pill">Case Study</span>
+      <h1>NVIDIA Nemotron Reasoning</h1>
+      <p class="case-subtitle">
+        A stratified Chain-of-Thought sampling method that cuts LoRA fine-tuning gradient
+        variance by 83% on a 30-billion-parameter Nemotron model &mdash; measured, not estimated.
+      </p>
+      <p class="case-meta">
+        Co-authored with M Irfan Al Hakim (Universitas Negeri Semarang) · Preprint submitted to Elsevier ·
+        <a href="https://github.com/PashaAkrilian/NVIDIA-Nemotron-Model-Reasoning" target="_blank" rel="noopener">View source on GitHub &#8599;</a>
+      </p>
+    </header>
+
+    <section class="beat">
+      <span class="beat-num">01 &mdash; The Problem</span>
+      <h2>Random sampling makes a 30B-parameter fine-tune fight itself</h2>
+      <p>
+        Fine-tuning NVIDIA's Nemotron-3-Nano-30B on Chain-of-Thought (CoT) reasoning data under
+        constrained GPU hardware isn't just an engineering inconvenience &mdash; it's an
+        optimization problem. A typical CoT corpus pools wildly different reasoning domains
+        together: numeral conversion, unit conversion, text encryption, bit manipulation,
+        equation transformation. Sample from that pool at random, and the token distribution
+        swings sharply from one mini-batch to the next. That swing destabilizes the gradient:
+        loss spikes, gradient norms fluctuate, and VRAM allocation becomes unpredictable enough
+        to trigger fatal out-of-memory crashes mid-run. On constrained hardware, losing a 30B
+        fine-tune to an OOM crash partway through means losing hours of compute. The question we
+        set out to answer: could restructuring <em>how training data is sampled</em> &mdash; not the
+        model, not the optimizer &mdash; fix that?
+      </p>
+    </section>
+
+    <section class="beat">
+      <span class="beat-num">02 &mdash; What I Did</span>
+      <h2>Stratified the training data, then measured the difference instead of assuming it</h2>
+      <p>Working with M Irfan Al Hakim, I built a stratified CoT sampling framework for LoRA fine-tuning:</p>
+      <ul>
+        <li><strong>Stratified data pipeline</strong> &mdash; partitioned a 2,907-example CoT corpus into 6 mutually exclusive reasoning strata (numeral conversion, gravitational-constant calculations, unit conversion, text encryption, bit manipulation, equation transformation), each roughly 16&ndash;17% of the data, and sampled proportionally from every stratum with a fixed seed (42) for reproducibility &mdash; instead of letting domain composition drift randomly batch to batch.</li>
+        <li><strong>Hardware-constrained training engineering</strong> &mdash; LoRA (rank 32, targeting all linear layers) on Nemotron-3-Nano-30B, with dynamic CUDA allocator segment expansion to stop memory fragmentation, non-reentrant gradient checkpointing to trade recomputation for lower activation memory, and a compressed effective batch (micro-batch of 1, 4 accumulation steps) under AdamW with Cosine Annealing.</li>
+        <li><strong>Step-level diagnostics</strong> &mdash; a custom training callback that logged gradient norm, cross-entropy loss, and VRAM allocation at every single training step, not just per epoch, so the comparison would be measured rather than eyeballed.</li>
+      </ul>
+      <p>
+        We then ran two configurations under identical hyperparameters &mdash; simple random
+        sampling as the baseline, and stratified sampling as the proposed method &mdash; specifically
+        to isolate the effect of the sampling strategy itself, not conflate it with anything else.
+      </p>
+    </section>
+
+    <section class="beat">
+      <span class="beat-num">03 &mdash; What Came of It</span>
+      <h2>Stratified sampling won on every axis we tracked, across 720 training steps</h2>
+      <p>
+        These are measured results from the diagnostics log, not projections:
+      </p>
+
+      <div class="table-scroll">
+        <table>
+          <thead>
+            <tr><th>Metric</th><th>Random Sampling</th><th>Stratified Sampling</th><th>Change</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>Terminal cross-entropy loss</td><td>1.342</td><td>1.285</td><td class="delta">&minus;4.25%</td></tr>
+            <tr><td>Mean gradient norm</td><td>1.425</td><td>0.812</td><td class="delta">&minus;43.01%</td></tr>
+            <tr><td>Gradient norm variance</td><td>0.684</td><td>0.114</td><td class="delta">&minus;83.33%</td></tr>
+            <tr><td>Peak VRAM allocated</td><td>14.82 GB</td><td>13.15 GB</td><td class="delta">&minus;11.27%</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <p>
+        The headline isn't the lower loss &mdash; it's the 83% drop in gradient norm variance. That
+        means the stratified run wasn't just a little better on average, it was dramatically more
+        stable step to step, which is what actually prevents the fragmented memory spikes that
+        cause OOM crashes on constrained hardware.
+      </p>
+      <p>
+        The honest caveat, stated plainly in the paper itself: this validates the effect on one
+        model, one 2,907-example dataset, and one hardware setup. Testing this on larger models
+        and full-parameter training regimes is explicitly future work, not something we've already
+        shown. What we can say is that, under the conditions we actually tested, how you sample a
+        heterogeneous CoT dataset measurably changes how stable a LoRA fine-tune is &mdash;
+        independent of the model or optimizer.
+      </p>
+    </section>
+
+    <section class="beat">
+      <span class="beat-num">Stack &amp; Reasoning</span>
+      <h2>A few of the calls, and their trade-offs</h2>
+      <div class="table-scroll">
+        <table>
+          <thead>
+            <tr><th>Technique</th><th>Why</th><th>Trade-off</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>LoRA (rank 32, all-linear)</td><td>Parameter-efficient fine-tuning that fits a 30B model into constrained VRAM</td><td>Less expressive than full fine-tuning &mdash; a deliberate trade for feasibility</td></tr>
+            <tr><td>Stratified sampling (6 strata, seed 42)</td><td>Balances reasoning-domain composition in every batch instead of letting it drift randomly</td><td>Needs a corpus with identifiable domain labels &mdash; doesn't generalize to unlabeled data without extra work</td></tr>
+            <tr><td>Non-reentrant gradient checkpointing</td><td>Trades recomputation for lower activation memory during backprop</td><td>Slower per-step wall-clock time in exchange for fitting in VRAM at all</td></tr>
+            <tr><td>Effective batching (micro-batch 1 &times; 4 accumulation)</td><td>Simulates a batch of 4 without the memory cost of holding it directly</td><td>Small true batch size per step, offset by accumulation rather than eliminated</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="case-cta">
+      <h2>Want to talk through the paper or the training setup?</h2>
+      <p>Happy to walk through the stratification method, the memory engineering, or what testing this at larger scale would take.</p>
+      <a class="cta-btn" href="mailto:dimaspasha49@gmail.com">Email me &rarr;</a>
+    </section>
+
+    <section class="more-work">
+      <h2>More Work</h2>
+      <div class="work-grid">
+        <a class="work-card" href="ecosentra.html">
+          <span class="work-name">EcoSentra</span>
+          <span class="work-desc">A land-cover analysis platform for Indonesia — and an honest checkpoint on what's actually working vs. still in progress.</span>
+        </a>
+        <a class="work-card" href="siaga.html">
+          <span class="work-name">SIAGA</span>
+          <span class="work-desc">A live drought early-warning dashboard for Indonesia — deployed, tested, and honest about its train/test accuracy gap.</span>
+        </a>
+      </div>
+    </section>
+
+    <footer class="site-footer">&copy; 2026 Dimas Pasha</footer>
+  </main>
+</body>
+</html>

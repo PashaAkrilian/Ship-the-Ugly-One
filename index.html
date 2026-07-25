@@ -16,9 +16,15 @@
 
   body {
     display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+  }
+
+  .hero {
+    flex: 1;
+    display: flex;
     align-items: center;
     justify-content: center;
-    min-height: 100vh;
     padding: 24px;
   }
 
@@ -72,12 +78,6 @@
     font-weight: 600;
   }
 
-  .status {
-    font-size: 0.95rem;
-    color: var(--muted);
-    margin: 0 0 36px;
-  }
-
   .work {
     text-align: left;
     margin: 0 0 36px;
@@ -108,7 +108,17 @@
 </style>
 </head>
 <body>
-  <main class="container">
+  <nav class="site-nav">
+    <a class="site-nav-brand" href="index.html">Dimas Pasha</a>
+    <div class="site-nav-links">
+      <a href="index.html">Home</a>
+      <a href="ecosentra.html">EcoSentra</a>
+      <a href="siaga.html">SIAGA</a>
+      <a href="nemotron.html">NVIDIA Nemotron</a>
+      <a href="mailto:dimaspasha49@gmail.com">Contact</a>
+    </div>
+  </nav>
+  <main class="hero"><div class="container">
     <span class="pill">ML Engineer → Robotics Software Engineer</span>
     <h1>Dimas Pasha</h1>
     <hr class="divider">
@@ -123,17 +133,16 @@
           <span class="work-name">EcoSentra</span>
           <span class="work-desc">A land-cover analysis platform for Indonesia — and an honest checkpoint on what's actually working vs. still in progress.</span>
         </a>
-        <a class="work-card" href="https://github.com/PashaAkrilian/SIAGA-Sistem-Peringatan-Dini-Kekeringan" target="_blank" rel="noopener">
+        <a class="work-card" href="siaga.html">
           <span class="work-name">SIAGA</span>
-          <span class="work-desc">Full-stack early-warning system forecasting drought risk across Indonesia under extreme climate scenarios.</span>
+          <span class="work-desc">A live drought early-warning dashboard for Indonesia — deployed, tested, and honest about its train/test accuracy gap.</span>
         </a>
-        <a class="work-card" href="https://github.com/PashaAkrilian/NVIDIA-Nemotron-Model-Reasoning" target="_blank" rel="noopener">
+        <a class="work-card" href="nemotron.html">
           <span class="work-name">NVIDIA Nemotron Reasoning</span>
-          <span class="work-desc">Deep learning and LLM fine-tuning project built for NVIDIA's Nemotron model reasoning challenge.</span>
+          <span class="work-desc">A stratified sampling method that cuts LoRA fine-tuning gradient variance by 83% — measured across 720 training steps.</span>
         </a>
       </div>
     </section>
-    <p class="status">Portfolio launching soon. Building in public.</p>
     <div class="links">
       <a href="https://github.com/PashaAkrilian" target="_blank" rel="noopener" aria-label="GitHub">
         <svg viewBox="0 0 24 24" aria-hidden="true">
@@ -147,6 +156,6 @@
       </a>
     </div>
     <footer class="site-footer">&copy; 2026 Dimas Pasha</footer>
-  </main>
+  </div></main>
 </body>
 </html>

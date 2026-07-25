@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SIAGA — Case Study — Dimas Pasha</title>
+<meta name="description" content="SIAGA: a deployed drought early-warning platform for Indonesia, turning XGBoost climate research into a live, interactive dashboard.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+<style>
+  .case {
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 32px 24px 60px;
+  }
+
+  .case-header {
+    margin: 0 0 36px;
+  }
+
+  .case-header .pill {
+    margin-bottom: 18px;
+  }
+
+  .case-header h1 {
+    font-family: var(--font-heading);
+    font-size: clamp(2rem, 5vw, 2.8rem);
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    margin: 0 0 14px;
+  }
+
+  .case-subtitle {
+    font-size: 1.1rem;
+    line-height: 1.6;
+    color: var(--text);
+    margin: 0 0 16px;
+  }
+
+  .case-meta {
+    font-size: 0.9rem;
+    color: var(--muted);
+  }
+
+  .case-meta a {
+    color: var(--muted);
+    text-decoration: underline;
+    text-decoration-color: rgba(255, 255, 255, 0.2);
+  }
+
+  .case-meta a:hover,
+  .case-meta a:focus-visible {
+    color: var(--accent);
+    text-decoration-color: var(--accent);
+  }
+
+  .beat {
+    margin: 44px 0;
+  }
+
+  .beat-num {
+    display: block;
+    font-family: var(--font-heading);
+    font-size: 0.78rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 10px;
+  }
+
+  .beat h2 {
+    font-family: var(--font-heading);
+    font-size: 1.5rem;
+    margin: 0 0 16px;
+  }
+
+  .beat p {
+    line-height: 1.75;
+    color: var(--text);
+    margin: 0 0 16px;
+  }
+
+  .beat ul {
+    margin: 0 0 16px;
+    padding-left: 20px;
+    line-height: 1.75;
+  }
+
+  .beat li {
+    margin-bottom: 8px;
+  }
+
+  .table-scroll {
+    overflow-x: auto;
+    margin: 8px 0 4px;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 10px;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.88rem;
+    min-width: 560px;
+  }
+
+  th, td {
+    text-align: left;
+    padding: 10px 14px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    vertical-align: top;
+  }
+
+  tr:last-child td {
+    border-bottom: none;
+  }
+
+  th {
+    font-family: var(--font-heading);
+    font-size: 0.7rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+
+  td {
+    color: var(--text);
+  }
+
+  .status-tag {
+    display: inline-block;
+    font-family: var(--font-heading);
+    font-size: 0.68rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    padding: 3px 9px;
+    border-radius: 999px;
+    border: 1px solid;
+    white-space: nowrap;
+  }
+
+  .status-tag.live {
+    color: var(--accent);
+    border-color: var(--accent);
+    background: rgba(232, 163, 61, 0.1);
+  }
+
+  .status-tag.partial {
+    color: var(--text);
+    border-color: var(--circuit);
+    background: rgba(36, 66, 94, 0.4);
+  }
+
+  .status-tag.mock {
+    color: var(--muted);
+    border-color: rgba(255, 255, 255, 0.15);
+  }
+
+  .status-tag.planned {
+    color: var(--muted);
+    border-color: rgba(255, 255, 255, 0.08);
+    opacity: 0.75;
+  }
+
+  .case-cta {
+    text-align: center;
+    margin: 56px 0 44px;
+    padding: 36px 24px;
+    border: 1px solid var(--circuit);
+    border-radius: 14px;
+    background: rgba(36, 66, 94, 0.12);
+  }
+
+  .case-cta h2 {
+    font-family: var(--font-heading);
+    font-size: 1.4rem;
+    margin: 0 0 10px;
+  }
+
+  .case-cta p {
+    color: var(--muted);
+    line-height: 1.6;
+    margin: 0 0 22px;
+  }
+
+  .more-work h2 {
+    font-family: var(--font-heading);
+    font-size: 0.78rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin: 0 0 14px;
+  }
+</style>
+</head>
+<body>
+  <nav class="site-nav">
+    <a class="site-nav-brand" href="index.html">Dimas Pasha</a>
+    <div class="site-nav-links">
+      <a href="index.html">Home</a>
+      <a href="ecosentra.html">EcoSentra</a>
+      <a href="siaga.html">SIAGA</a>
+      <a href="nemotron.html">NVIDIA Nemotron</a>
+      <a href="mailto:dimaspasha49@gmail.com">Contact</a>
+    </div>
+  </nav>
+
+  <main class="case">
+    <header class="case-header">
+      <span class="pill">Case Study</span>
+      <h1>SIAGA</h1>
+      <p class="case-subtitle">
+        An Indonesia-wide drought early-warning platform &mdash; turning XGBoost climate research
+        into a live dashboard people can actually explore, not just a notebook and a paper.
+      </p>
+      <p class="case-meta">
+        Solo build · Full-stack platform + ML forecasting ·
+        <a href="https://github.com/PashaAkrilian/SIAGA-Sistem-Peringatan-Dini-Kekeringan" target="_blank" rel="noopener">View source on GitHub &#8599;</a> ·
+        <a href="https://frontend-nu-silk-76.vercel.app" target="_blank" rel="noopener">Live Demo &#8599;</a>
+      </p>
+    </header>
+
+    <section class="beat">
+      <span class="beat-num">01 &mdash; The Problem</span>
+      <h2>Climate research that only lives in a paper doesn't warn anyone</h2>
+      <p>
+        Research out of Universitas Negeri Semarang modeled how a specific, dated climate
+        scenario &mdash; the "Godzilla El Ni&ntilde;o 2026" &mdash; would affect drought risk across
+        Indonesia, using spatio-temporal climate kinematics and an XGBoost forecasting model.
+        That's valuable science, but a paper and a training notebook aren't something a
+        policymaker, researcher, or the public can actually check. SIAGA's job was to turn that
+        research into a product: a live dashboard where someone can see current drought risk,
+        explore historical climate data back to 2000, and run their own "what if this year's
+        El Ni&ntilde;o is stronger or weaker" simulations &mdash; and to actually deploy it, not just
+        demo it locally.
+      </p>
+    </section>
+
+    <section class="beat">
+      <span class="beat-num">02 &mdash; What I Did</span>
+      <h2>Built and deployed three connected pieces, solo</h2>
+      <p>I built this alone, as three parts that had to ship together, not just run on my machine:</p>
+      <ul>
+        <li><strong>Training pipeline</strong> &mdash; feature engineering and model training on CHIRPS, MODIS, and NOAA OISST climate data (2000&ndash;2025), producing both a point-forecast XGBoost model and quantile models for Q10/Q50/Q90 prediction intervals, so the output is a range, not a false-precision single number.</li>
+        <li><strong>Backend API</strong> &mdash; a FastAPI service serving six endpoints (metrics, historical data, forecasts, feature importance, island-level summaries, and real-time simulation), with JWT authentication and bcrypt password hashing gating the admin routes, and PyTest test files (<code>test_api.py</code>, <code>test_auth.py</code>) covering the API and auth logic.</li>
+        <li><strong>Frontend dashboard</strong> &mdash; a React + Vite app using Recharts to visualize historical SDCI/ONI data, forecast projections, and SHAP-based feature importance, so the model's reasoning is inspectable, not a black box.</li>
+      </ul>
+      <p>
+        I also containerized the whole stack with Docker Compose and actually deployed it &mdash;
+        backend on Railway, frontend on Vercel &mdash; instead of leaving "how to run this" as a
+        local-only instruction.
+      </p>
+    </section>
+
+    <section class="beat">
+      <span class="beat-num">03 &mdash; What Came of It</span>
+      <h2>It's live, and I checked the numbers instead of just quoting the README</h2>
+      <p>
+        As of writing this, the dashboard, the API, and its Swagger docs are all reachable and
+        responding &mdash; I hit them directly rather than trusting the README. I also called the
+        live <code>/api/metrics</code> endpoint myself and got real evaluation numbers back:
+        training R&sup2; of 0.985 (RMSE 0.014), but test R&sup2; of 0.737 (RMSE 0.050). That gap
+        between training and test performance is a real signal of some overfitting on held-out
+        data &mdash; worth naming honestly rather than only reporting the more flattering training
+        number.
+      </p>
+      <p>
+        Where this project is further along than EcoSentra: it's actually deployed end-to-end
+        and publicly reachable, and the admin routes have real JWT authentication instead of
+        being wide open. Where it's a smaller system than EcoSentra: it's one model and one
+        service, not a multi-service architecture with an agent-facing tool layer. Both are true
+        at once, and I'd rather state the comparison than let either page imply it's the more
+        "finished" project.
+      </p>
+
+      <div class="table-scroll">
+        <table>
+          <thead>
+            <tr><th>Feature</th><th>Status</th><th>Note</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>Live dashboard (Vercel)</td><td><span class="status-tag live">Live</span></td><td>Confirmed reachable at time of writing</td></tr>
+            <tr><td>Forecast API (Railway)</td><td><span class="status-tag live">Live</span></td><td>Confirmed reachable, Swagger docs included</td></tr>
+            <tr><td>XGBoost drought forecast</td><td><span class="status-tag live">Live</span></td><td>Verified via live metrics endpoint &mdash; test R&sup2; 0.737</td></tr>
+            <tr><td>Quantile intervals (Q10/Q50/Q90)</td><td><span class="status-tag live">Live</span></td><td>Uncertainty range, not a single-point forecast</td></tr>
+            <tr><td>SHAP feature importance</td><td><span class="status-tag live">Live</span></td><td>Served via <code>/api/feature-importance</code></td></tr>
+            <tr><td>El Ni&ntilde;o what-if simulation</td><td><span class="status-tag live">Live</span></td><td>Served via <code>/api/simulate</code></td></tr>
+            <tr><td>JWT authentication (admin)</td><td><span class="status-tag live">Live</span></td><td>Public dashboard stays open; admin routes gated</td></tr>
+            <tr><td>Automated tests (PyTest)</td><td><span class="status-tag live">Live</span></td><td>Real test files for API and auth logic exist in the repo</td></tr>
+            <tr><td>Train/test generalization gap</td><td><span class="status-tag partial">Partial</span></td><td>Test R&sup2; (0.737) notably lower than train R&sup2; (0.985) &mdash; room to reduce overfitting</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="beat">
+      <span class="beat-num">Stack &amp; Reasoning</span>
+      <h2>A few of the calls, and their trade-offs</h2>
+      <div class="table-scroll">
+        <table>
+          <thead>
+            <tr><th>Technology</th><th>Why</th><th>Trade-off</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>XGBoost</td><td>Strong performance on structured, feature-engineered climate data; supports both point forecasts and quantile intervals</td><td>Less suited to raw spatio-temporal imagery than a deep model &mdash; traded off in favor of engineered kinematic features</td></tr>
+            <tr><td>FastAPI</td><td>Async Python API that sits naturally next to the training pipeline</td><td>A separate deploy target (Railway) to keep in sync with the frontend</td></tr>
+            <tr><td>React + Vite</td><td>Fast dev loop for an interactive, chart-heavy dashboard</td><td>A second build/deploy pipeline (Vercel), separate from the Python backend</td></tr>
+            <tr><td>JWT + bcrypt</td><td>Stateless auth for admin routes without running a session store</td><td>Only admin routes are gated &mdash; the public dashboard has no user accounts, by design</td></tr>
+            <tr><td>Docker Compose</td><td>One command to run backend + frontend together, matching production shape</td><td>A second "how to run this" path to keep in sync with the plain <code>uvicorn</code> / <code>npm run dev</code> instructions</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="case-cta">
+      <h2>Want to see the dashboard live or talk through the model?</h2>
+      <p>Happy to walk through the forecasting pipeline, the deployment setup, or what I'd do next to close that train/test gap.</p>
+      <a class="cta-btn" href="mailto:dimaspasha49@gmail.com">Email me &rarr;</a>
+    </section>
+
+    <section class="more-work">
+      <h2>More Work</h2>
+      <div class="work-grid">
+        <a class="work-card" href="ecosentra.html">
+          <span class="work-name">EcoSentra</span>
+          <span class="work-desc">A land-cover analysis platform for Indonesia — and an honest checkpoint on what's actually working vs. still in progress.</span>
+        </a>
+        <a class="work-card" href="nemotron.html">
+          <span class="work-name">NVIDIA Nemotron Reasoning</span>
+          <span class="work-desc">A stratified sampling method that cuts LoRA fine-tuning gradient variance by 83% — measured across 720 training steps.</span>
+        </a>
+      </div>
+    </section>
+
+    <footer class="site-footer">&copy; 2026 Dimas Pasha</footer>
+  </main>
+</body>
+</html>
