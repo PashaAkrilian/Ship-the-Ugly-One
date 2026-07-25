@@ -135,6 +135,87 @@
     font-weight: 600;
   }
 
+  .metric-chart {
+    margin: 20px 0 28px;
+  }
+
+  .chart-legend {
+    display: flex;
+    gap: 20px;
+    margin-bottom: 18px;
+    font-size: 0.82rem;
+    color: var(--muted);
+  }
+
+  .chart-legend .swatch {
+    display: inline-block;
+    width: 10px;
+    height: 10px;
+    border-radius: 2px;
+    margin-right: 6px;
+  }
+
+  .chart-legend .swatch.baseline {
+    background: #4E7FB8;
+  }
+
+  .chart-legend .swatch.result {
+    background: #B8801F;
+  }
+
+  .chart-row {
+    margin-bottom: 16px;
+  }
+
+  .chart-row:last-child {
+    margin-bottom: 0;
+  }
+
+  .chart-row-label {
+    font-size: 0.85rem;
+    color: var(--text);
+    margin-bottom: 6px;
+  }
+
+  .bar-track {
+    position: relative;
+    height: 24px;
+    margin-bottom: 4px;
+    background: rgba(255, 255, 255, 0.04);
+    border-radius: 4px;
+  }
+
+  .bar-track:last-child {
+    margin-bottom: 0;
+  }
+
+  .bar {
+    height: 100%;
+    min-width: fit-content;
+    box-sizing: border-box;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    padding: 0 8px;
+    border-radius: 4px;
+  }
+
+  .bar-baseline {
+    background: #4E7FB8;
+  }
+
+  .bar-result {
+    background: #B8801F;
+  }
+
+  .bar-value {
+    font-family: var(--font-heading);
+    font-size: 0.72rem;
+    font-weight: 600;
+    color: #14181B;
+    white-space: nowrap;
+  }
+
   .case-cta {
     text-align: center;
     margin: 56px 0 44px;
@@ -230,8 +311,42 @@
       <span class="beat-num">03 &mdash; What Came of It</span>
       <h2>Stratified sampling won on every axis we tracked, across 720 training steps</h2>
       <p>
-        These are measured results from the diagnostics log, not projections:
+        These are measured results from the diagnostics log, not projections. Each metric below
+        is indexed to its own random-sampling baseline (100%) so all four are readable on one
+        chart, since their raw units span from a variance of 0.68 to 14.82 GB of VRAM &mdash; the
+        exact values are in the table underneath.
       </p>
+
+      <div class="metric-chart" data-palette="#4E7FB8,#B8801F">
+        <div class="chart-legend">
+          <span><span class="swatch baseline"></span>Random Sampling</span>
+          <span><span class="swatch result"></span>Stratified Sampling</span>
+        </div>
+
+        <div class="chart-row">
+          <div class="chart-row-label">Terminal cross-entropy loss</div>
+          <div class="bar-track"><div class="bar bar-baseline" style="width:100%" title="Random sampling: 1.342"><span class="bar-value">1.342</span></div></div>
+          <div class="bar-track"><div class="bar bar-result" style="width:95.75%" title="Stratified sampling: 1.285"><span class="bar-value">1.285</span></div></div>
+        </div>
+
+        <div class="chart-row">
+          <div class="chart-row-label">Mean gradient norm</div>
+          <div class="bar-track"><div class="bar bar-baseline" style="width:100%" title="Random sampling: 1.425"><span class="bar-value">1.425</span></div></div>
+          <div class="bar-track"><div class="bar bar-result" style="width:56.98%" title="Stratified sampling: 0.812"><span class="bar-value">0.812</span></div></div>
+        </div>
+
+        <div class="chart-row">
+          <div class="chart-row-label">Gradient norm variance</div>
+          <div class="bar-track"><div class="bar bar-baseline" style="width:100%" title="Random sampling: 0.684"><span class="bar-value">0.684</span></div></div>
+          <div class="bar-track"><div class="bar bar-result" style="width:16.67%" title="Stratified sampling: 0.114"><span class="bar-value">0.114</span></div></div>
+        </div>
+
+        <div class="chart-row">
+          <div class="chart-row-label">Peak VRAM allocated</div>
+          <div class="bar-track"><div class="bar bar-baseline" style="width:100%" title="Random sampling: 14.82 GB"><span class="bar-value">14.82 GB</span></div></div>
+          <div class="bar-track"><div class="bar bar-result" style="width:88.73%" title="Stratified sampling: 13.15 GB"><span class="bar-value">13.15 GB</span></div></div>
+        </div>
+      </div>
 
       <div class="table-scroll">
         <table>

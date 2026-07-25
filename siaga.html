@@ -193,6 +193,24 @@
     color: var(--muted);
     margin: 0 0 14px;
   }
+
+  .case-screenshot {
+    margin: 0 0 36px;
+  }
+
+  .case-screenshot img {
+    display: block;
+    width: 100%;
+    height: auto;
+    border: 1px solid var(--circuit);
+    border-radius: 12px;
+  }
+
+  .case-screenshot figcaption {
+    margin-top: 8px;
+    font-size: 0.82rem;
+    color: var(--muted);
+  }
 </style>
 </head>
 <body>
@@ -221,6 +239,11 @@
         <a href="https://frontend-nu-silk-76.vercel.app" target="_blank" rel="noopener">Live Demo &#8599;</a>
       </p>
     </header>
+
+    <figure class="case-screenshot">
+      <img src="siaga-dashboard.png" alt="SIAGA live dashboard showing the drought risk forecast, national SDCI score, and model accuracy.">
+      <figcaption>The live dashboard, as it looks right now &mdash; not a mockup.</figcaption>
+    </figure>
 
     <section class="beat">
       <span class="beat-num">01 &mdash; The Problem</span>
