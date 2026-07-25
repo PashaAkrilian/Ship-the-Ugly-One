@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>EcoSentra — Case Study — Dimas Pasha</title>
+<meta name="description" content="EcoSentra: a land-cover and ecosystem analysis platform for Indonesia, built on Google Earth Engine and ML — and documented as an honest engineering checkpoint, not a finished-feature list.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+<style>
+  .site-nav {
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 28px 24px 0;
+  }
+
+  .site-nav a {
+    color: var(--muted);
+    text-decoration: none;
+    font-size: 0.9rem;
+  }
+
+  .site-nav a:hover,
+  .site-nav a:focus-visible {
+    color: var(--accent);
+  }
+
+  .case {
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 32px 24px 60px;
+  }
+
+  .case-header {
+    margin: 0 0 36px;
+  }
+
+  .case-header .pill {
+    margin-bottom: 18px;
+  }
+
+  .case-header h1 {
+    font-family: var(--font-heading);
+    font-size: clamp(2rem, 5vw, 2.8rem);
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    margin: 0 0 14px;
+  }
+
+  .case-subtitle {
+    font-size: 1.1rem;
+    line-height: 1.6;
+    color: var(--text);
+    margin: 0 0 16px;
+  }
+
+  .case-meta {
+    font-size: 0.9rem;
+    color: var(--muted);
+  }
+
+  .case-meta a {
+    color: var(--muted);
+    text-decoration: underline;
+    text-decoration-color: rgba(255, 255, 255, 0.2);
+  }
+
+  .case-meta a:hover,
+  .case-meta a:focus-visible {
+    color: var(--accent);
+    text-decoration-color: var(--accent);
+  }
+
+  .beat {
+    margin: 44px 0;
+  }
+
+  .beat-num {
+    display: block;
+    font-family: var(--font-heading);
+    font-size: 0.78rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 10px;
+  }
+
+  .beat h2 {
+    font-family: var(--font-heading);
+    font-size: 1.5rem;
+    margin: 0 0 16px;
+  }
+
+  .beat p {
+    line-height: 1.75;
+    color: var(--text);
+    margin: 0 0 16px;
+  }
+
+  .beat ul {
+    margin: 0 0 16px;
+    padding-left: 20px;
+    line-height: 1.75;
+  }
+
+  .beat li {
+    margin-bottom: 8px;
+  }
+
+  .table-scroll {
+    overflow-x: auto;
+    margin: 8px 0 4px;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 10px;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.88rem;
+    min-width: 560px;
+  }
+
+  th, td {
+    text-align: left;
+    padding: 10px 14px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    vertical-align: top;
+  }
+
+  tr:last-child td {
+    border-bottom: none;
+  }
+
+  th {
+    font-family: var(--font-heading);
+    font-size: 0.7rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+
+  td {
+    color: var(--text);
+  }
+
+  .status-tag {
+    display: inline-block;
+    font-family: var(--font-heading);
+    font-size: 0.68rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    padding: 3px 9px;
+    border-radius: 999px;
+    border: 1px solid;
+    white-space: nowrap;
+  }
+
+  .status-tag.live {
+    color: var(--accent);
+    border-color: var(--accent);
+    background: rgba(232, 163, 61, 0.1);
+  }
+
+  .status-tag.partial {
+    color: var(--text);
+    border-color: var(--circuit);
+    background: rgba(36, 66, 94, 0.4);
+  }
+
+  .status-tag.mock {
+    color: var(--muted);
+    border-color: rgba(255, 255, 255, 0.15);
+  }
+
+  .status-tag.planned {
+    color: var(--muted);
+    border-color: rgba(255, 255, 255, 0.08);
+    opacity: 0.75;
+  }
+
+  .case-cta {
+    text-align: center;
+    margin: 56px 0 44px;
+    padding: 36px 24px;
+    border: 1px solid var(--circuit);
+    border-radius: 14px;
+    background: rgba(36, 66, 94, 0.12);
+  }
+
+  .case-cta h2 {
+    font-family: var(--font-heading);
+    font-size: 1.4rem;
+    margin: 0 0 10px;
+  }
+
+  .case-cta p {
+    color: var(--muted);
+    line-height: 1.6;
+    margin: 0 0 22px;
+  }
+
+  .more-work h2 {
+    font-family: var(--font-heading);
+    font-size: 0.78rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin: 0 0 14px;
+  }
+</style>
+</head>
+<body>
+  <nav class="site-nav">
+    <a href="index.html">&larr; Back to home</a>
+  </nav>
+
+  <main class="case">
+    <header class="case-header">
+      <span class="pill">Case Study</span>
+      <h1>EcoSentra</h1>
+      <p class="case-subtitle">
+        Land-cover and ecosystem analysis for Indonesia, built on real satellite data —
+        documented with the same honesty a system needs before anyone should trust it.
+      </p>
+      <p class="case-meta">
+        Team lead · Full-stack platform + ML pipeline ·
+        <a href="https://github.com/PashaAkrilian/EcoSentra-Platform-Analisis-Lahan-dan-Ekosistem-Indonesia" target="_blank" rel="noopener">View source on GitHub &#8599;</a>
+      </p>
+    </header>
+
+    <section class="beat">
+      <span class="beat-num">01 &mdash; The Problem</span>
+      <h2>Land-cover change moves faster than manual survey can track</h2>
+      <p>
+        Indonesia needs continuous, ground-truthed visibility into land cover and ecosystem
+        health &mdash; deforestation, drought, and land-use change don't wait for the next manual
+        survey cycle. Satellite imagery and Google Earth Engine make the raw data available, and
+        machine learning can turn that imagery into land-cover classifications. But turning that
+        into something a decision-maker could actually rely on takes more than a working
+        notebook: it takes an API with access control, a service that survives being deployed,
+        and &mdash; just as important &mdash; a model that's honest about how good it actually is.
+        That gap, between an ML prototype and infrastructure someone can depend on, is where
+        EcoSentra started.
+      </p>
+    </section>
+
+    <section class="beat">
+      <span class="beat-num">02 &mdash; What I Did</span>
+      <h2>Built the platform as connected services, not one demo script</h2>
+      <p>As team lead, I structured EcoSentra as a monorepo with pieces that have to work together:</p>
+      <ul>
+        <li><strong>Frontend + API</strong> &mdash; a Next.js app with its own backend routes on Firestore: 10 endpoints (fields, alerts, users, and more), all validated with Zod so malformed input gets rejected before it touches the database.</li>
+        <li><strong>Geo analysis service</strong> &mdash; a FastAPI service in Python, the language Google Earth Engine's SDK actually ships in, that takes a coordinate and returns a real land-cover analysis from GEE, with rate limiting so it can't be hammered.</li>
+        <li><strong>MCP server</strong> &mdash; a Model Context Protocol server that exposes that same land-cover lookup as a tool an AI agent can call. It runs in a safe mock mode by default and switches to the real GEE-backed service with a single environment variable.</li>
+        <li><strong>ML classification</strong> &mdash; a SegFormer semantic segmentation model, trained on satellite imagery to classify land cover into 9 classes.</li>
+      </ul>
+      <p>
+        Beyond the code: I wrote a real security checklist, set up a CI pipeline (lint,
+        type-check, build), and cleaned up 41 unused files and 33 unused dependencies left over
+        from the UI starter template. And instead of documentation that describes the intended
+        final product, the README keeps a status table labeling every feature LIVE, PARTIAL,
+        MOCK, or PLANNED &mdash; an honest checkpoint, not a feature list.
+      </p>
+    </section>
+
+    <section class="beat">
+      <span class="beat-num">03 &mdash; What Came of It</span>
+      <h2>What's actually working, and what I'm choosing not to hide</h2>
+      <p>
+        Some of this is genuinely working: the interactive map renders real data (including a
+        fix for label clutter at low zoom levels), the Firestore API validates input across nine
+        routes, and the Earth Engine integration is verified working end-to-end locally with rate
+        limiting active. The MCP server's mock/real switch is built and ready &mdash; flipping one
+        environment variable is all it takes to point it at the real geo service once that
+        service is deployed.
+      </p>
+      <p>
+        Some of it isn't there yet, and I'd rather say so than hide it. The SegFormer model's
+        first training run landed at 12&ndash;23% pixel accuracy &mdash; close to random guessing across
+        9 classes &mdash; so I deliberately have not built the ML-serving API yet; shipping a
+        "working" endpoint backed by a model that isn't accurate would be worse than not shipping
+        one at all. There's no authentication on any of the ten Firestore routes yet, which I've
+        flagged as the top security priority. And there's no automated test suite yet &mdash; just
+        one manual script for the Earth Engine connection.
+      </p>
+      <p>
+        The lesson I take from EcoSentra isn't "I built a finished platform." It's that I know,
+        precisely, which parts of it I'd trust in production and which parts I wouldn't yet &mdash;
+        and I built the habit of writing that down instead of letting a demo imply more than
+        what's real.
+      </p>
+
+      <div class="table-scroll">
+        <table>
+          <thead>
+            <tr><th>Feature</th><th>Status</th><th>Note</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>Interactive map (Leaflet)</td><td><span class="status-tag live">Live</span></td><td>Real rendering, including a low-zoom label-clutter fix</td></tr>
+            <tr><td>Firestore API (10 routes)</td><td><span class="status-tag live">Live</span></td><td>Zod input validation active; no auth yet</td></tr>
+            <tr><td>Security basics</td><td><span class="status-tag live">Live</span></td><td>Input validation, rate limiting, documented audit</td></tr>
+            <tr><td>Land-cover analysis (Earth Engine)</td><td><span class="status-tag partial">Partial</span></td><td>Verified locally; not yet deployed to production</td></tr>
+            <tr><td>SegFormer land-cover classification</td><td><span class="status-tag partial">Partial</span></td><td>Trained baseline at 12&ndash;23% pixel accuracy &mdash; not yet usable</td></tr>
+            <tr><td>CI/CD pipeline</td><td><span class="status-tag partial">Partial</span></td><td>Lint/type-check/build configured; currently red on missing secrets</td></tr>
+            <tr><td>Dashboard data</td><td><span class="status-tag mock">Mock</span></td><td>Simulated data, not yet wired to Firestore</td></tr>
+            <tr><td>MCP land-cover tool</td><td><span class="status-tag mock">Mock</span></td><td>Architecture ready; one env var away from real data</td></tr>
+            <tr><td>ML model serving API</td><td><span class="status-tag planned">Planned</span></td><td>Intentionally not built until model accuracy is usable</td></tr>
+            <tr><td>Automated tests</td><td><span class="status-tag planned">Planned</span></td><td>Zero test suites; one manual script exists</td></tr>
+            <tr><td>Authentication</td><td><span class="status-tag planned">Planned</span></td><td>Top priority on the security roadmap</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="beat">
+      <span class="beat-num">Stack &amp; Reasoning</span>
+      <h2>A few of the calls, and their trade-offs</h2>
+      <div class="table-scroll">
+        <table>
+          <thead>
+            <tr><th>Technology</th><th>Why</th><th>Trade-off</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>Next.js</td><td>One framework for frontend + lightweight API routes</td><td>Server and client code share an app &mdash; needs folder discipline to avoid leaking server-only code to the client</td></tr>
+            <tr><td>FastAPI (Python)</td><td>Python is Earth Engine's official SDK language</td><td>A second language in the monorepo, with its own venv/Docker setup</td></tr>
+            <tr><td>Firebase / Firestore</td><td>Fast MVP setup, no database server to manage</td><td>Admin SDK bypasses Firestore Security Rules &mdash; access control has to live in the API layer, which has no auth yet</td></tr>
+            <tr><td>MCP (Model Context Protocol)</td><td>Lets the geo service be called as a tool by an AI agent</td><td>Still a young standard with a smaller tooling ecosystem than plain REST</td></tr>
+            <tr><td>SegFormer</td><td>Lightweight semantic segmentation model for land-cover classification</td><td>Needs real GPU time to train well &mdash; the first run shows that effort hasn't happened yet</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="case-cta">
+      <h2>Want to talk through how this gets from prototype to production?</h2>
+      <p>Happy to walk through the architecture, the security checklist, or where the model training goes next.</p>
+      <a class="cta-btn" href="mailto:dimaspasha49@gmail.com">Email me &rarr;</a>
+    </section>
+
+    <section class="more-work">
+      <h2>More Work</h2>
+      <div class="work-grid">
+        <a class="work-card" href="https://github.com/PashaAkrilian/SIAGA-Sistem-Peringatan-Dini-Kekeringan" target="_blank" rel="noopener">
+          <span class="work-name">SIAGA</span>
+          <span class="work-desc">Full-stack early-warning system forecasting drought risk across Indonesia under extreme climate scenarios.</span>
+        </a>
+        <a class="work-card" href="https://github.com/PashaAkrilian/NVIDIA-Nemotron-Model-Reasoning" target="_blank" rel="noopener">
+          <span class="work-name">NVIDIA Nemotron Reasoning</span>
+          <span class="work-desc">Deep learning and LLM fine-tuning project built for NVIDIA's Nemotron model reasoning challenge.</span>
+        </a>
+      </div>
+    </section>
+
+    <footer class="site-footer">&copy; 2026 Dimas Pasha</footer>
+  </main>
+</body>
+</html>

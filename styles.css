@@ -1,0 +1,163 @@
+:root {
+  --bg: #14181B;
+  --bg-2: #182430;
+  --text: #F6F7F5;
+  --muted: #9aa7b3;
+  --accent: #E8A33D;
+  --circuit: #24425E;
+  --font-heading: 'Space Grotesk', sans-serif;
+  --font-body: 'IBM Plex Sans', sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  background: radial-gradient(circle at 50% 20%, var(--bg-2), var(--bg) 70%) fixed;
+  color: var(--text);
+  font-family: var(--font-body), -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+a {
+  color: var(--accent);
+}
+
+/* pill-shaped label, used for eyebrow text and status badges */
+.pill {
+  display: inline-block;
+  font-family: var(--font-heading);
+  font-size: 0.78rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--accent);
+  background: rgba(232, 163, 61, 0.08);
+  border: 1px solid rgba(232, 163, 61, 0.25);
+  padding: 6px 14px;
+  border-radius: 999px;
+}
+
+/* reusable card, used for project links on the home page and
+   "more work" links at the bottom of case studies */
+.work-grid {
+  display: grid;
+  gap: 12px;
+}
+
+.work-card {
+  display: block;
+  padding: 14px 16px;
+  border: 1px solid var(--circuit);
+  border-radius: 10px;
+  background: rgba(36, 66, 94, 0.15);
+  text-decoration: none;
+  transition: border-color 0.2s ease, transform 0.2s ease;
+}
+
+.work-card:hover,
+.work-card:focus-visible {
+  border-color: var(--accent);
+  transform: translateY(-2px);
+}
+
+.work-card .work-name {
+  display: block;
+  font-family: var(--font-heading);
+  font-weight: 600;
+  color: var(--text);
+  margin-bottom: 4px;
+}
+
+.work-card .work-desc {
+  display: block;
+  font-size: 0.9rem;
+  line-height: 1.5;
+  color: var(--muted);
+}
+
+/* amber call-to-action button, used to push visitors toward
+   scheduling a call or emailing directly */
+.cta-btn {
+  display: inline-block;
+  font-family: var(--font-heading);
+  font-weight: 600;
+  font-size: 0.95rem;
+  color: var(--bg);
+  background: var(--accent);
+  padding: 12px 26px;
+  border-radius: 8px;
+  text-decoration: none;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.cta-btn:hover,
+.cta-btn:focus-visible {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(232, 163, 61, 0.25);
+}
+
+/* round social icon links, used in the footer of every page */
+.links {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.links a {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  color: var(--muted);
+  text-decoration: none;
+  transition: color 0.2s ease, border-color 0.2s ease, transform 0.2s ease;
+}
+
+.links a:hover,
+.links a:focus-visible {
+  color: var(--accent);
+  border-color: var(--accent);
+  transform: translateY(-2px);
+}
+
+.links svg {
+  width: 20px;
+  height: 20px;
+  fill: currentColor;
+}
+
+.site-footer {
+  margin-top: 48px;
+  font-size: 0.8rem;
+  color: var(--muted);
+  opacity: 0.7;
+}
+
+@media (max-width: 420px) {
+  .pill {
+    font-size: 0.7rem;
+    padding: 5px 12px;
+  }
+
+  .links a {
+    width: 40px;
+    height: 40px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation: none !important;
+    transition: none !important;
+  }
+}
