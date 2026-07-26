@@ -1,8 +1,8 @@
-# Ship a Blank Page
+# Ship the Ugly One
 
-Coming-soon landing page for my portfolio, deployed via GitHub Pages.
+Personal portfolio site, deployed via GitHub Pages.
 
-**Live:** https://pashaakrilian.github.io/Ship-a-Blank-Page/
+**Live:** https://pashaakrilian.github.io/Ship-the-Ugly-One/
 
 ## About
 
@@ -13,7 +13,8 @@ Currently transitioning: **ML Engineer → Robotics Software Engineer**
 
 ## Stack
 
-Single `index.html` file — plain HTML + inline CSS, no build step, no dependencies.
+Plain HTML + a shared `styles.css`, no build step, no dependencies. `index.html` is the homepage;
+`ecosentra.html`, `siaga.html`, and `nemotron.html` are individual case study pages.
 
 ## Deploy
 
