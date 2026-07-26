@@ -1,39 +1,30 @@
 # DNS Walkthrough
 
-**DRAFT — to be rewritten in my own words before submission.**
+**Note:** this is written ahead of time, before I actually have a `flyrank.ai` subdomain. When Ops provisions mine, this doc is basically my checklist for what to do and what should be happening under the hood.
 
-This explains how my site's address will eventually work once I have a `myname.flyrank.ai` subdomain pointed at my GitHub Pages site. It's written now, before I need it, so it's ready as a checklist when the subdomain is provisioned.
+## What's a CNAME record anyway
 
-## What a CNAME record is
+DNS is basically the internet's contact list — it maps a name people type (like `pasha.flyrank.ai`) to where that thing actually lives. Most records ("A records") just point a name straight at a fixed IP address, kind of like saving someone's actual phone number.
 
-Think of the internet's address book (DNS) as a giant contacts list that maps human-friendly names, like `pasha.flyrank.ai`, to the actual location of a server. Most entries in that list ("A records") point a name directly at a fixed numeric address (an IP address), the way you'd save a friend's phone number.
+A CNAME is different — it points at *another name* instead of a number. It's the DNS equivalent of saving a contact as "same number as Alex" instead of typing the digits yourself. So instead of my subdomain pointing at some raw IP, it points at `pashaakrilian.github.io`, and whoever's asking has to go look that name up too. The upside: GitHub can change their servers' IPs behind the scenes all they want, and my subdomain still works, because it was never tied to an IP in the first place — just to GitHub's name.
 
-A **CNAME record** is different: instead of pointing at a number, it points at *another name*. It's like saving a contact as "same number as Alex" instead of writing the number down yourself. So `pasha.flyrank.ai` wouldn't point at some IP address directly — it would point at `pashaakrilian.github.io`, and whoever is asking would then look up *that* name to find the real address. This is useful because GitHub's servers can change IP addresses behind the scenes, and as long as the CNAME still points at `pashaakrilian.github.io`, my subdomain keeps working without me having to update anything.
+## What value mine will actually hold
 
-## What value my CNAME will point to
+My subdomain name isn't final yet, but whatever it ends up being (`something.flyrank.ai`), the CNAME record Ops creates for it will point to:
 
-Once FlyRank Ops provisions `myname.flyrank.ai` (my actual subdomain name isn't finalized yet), the CNAME record they create will point to:
-
-```
 pashaakrilian.github.io
-```
 
-That's the GitHub Pages address that currently serves this repo at `https://pashaakrilian.github.io/Ship-the-Ugly-One/`. On my end, I'll need to add `myname.flyrank.ai` as a custom domain in the repo's GitHub Pages settings (which also creates a `CNAME` file in the repo itself) so GitHub knows to accept traffic for that name and issue an HTTPS certificate for it.
+which is where this site currently lives (`https://pashaakrilian.github.io/Ship-the-Ugly-One/`). On my side, once that's set up, I still have to go into the repo's GitHub Pages settings and add the subdomain as a custom domain — that step is what actually makes GitHub accept traffic for that name and issue it an HTTPS cert. It also auto-generates a `CNAME` file inside the repo itself.
 
-## What actually happens, step by step, when someone visits my site
+## What happens between typing the address and the page showing up
 
-Say someone types `myname.flyrank.ai` into their browser. Here's the chain of events, in plain terms:
+Say someone types `myname.flyrank.ai` in their browser:
 
-1. **The browser asks a resolver.** The browser doesn't know where anything lives — it hands the name to a "resolver," usually run by the person's internet provider or a public service like Google's or Cloudflare's DNS. The resolver's job is to figure out the answer on the browser's behalf.
+1. **Browser asks a resolver.** The browser has no idea where anything is — it just hands the name off to a resolver, usually run by whoever provides your internet (or a public one like Cloudflare's or Google's).
+2. **Resolver goes up the chain.** It works its way through DNS's hierarchy — root, then `.ai`, then down to whoever's actually authoritative for `flyrank.ai` — until it finds the nameserver holding the real records for that domain.
+3. **That nameserver answers.** It looks up `myname.flyrank.ai`, finds the CNAME pointing to `pashaakrilian.github.io`, and hands that back.
+4. **Resolver has to look that up too.** Since a CNAME is just another name, not an address, the resolver now resolves *that* name, which eventually lands on GitHub's actual IP address.
+5. **The IP comes back to the browser.**
+6. **Browser connects and loads the page.** It opens an HTTPS connection straight to GitHub's server, asks for the page, and GitHub Pages serves back `index.html`. The padlock shows up once the cert for my subdomain checks out.
 
-2. **The resolver asks the nameservers.** The resolver works its way through the DNS system's hierarchy (starting from the root, down to `.ai`, down to `flyrank.ai`) until it reaches the **nameserver** that's actually responsible for `flyrank.ai`. That nameserver holds the official records for anything under that domain, including my subdomain.
-
-3. **The nameserver returns the record.** The `flyrank.ai` nameserver looks up `myname.flyrank.ai` in its records and finds the CNAME entry pointing to `pashaakrilian.github.io`. It hands that back to the resolver.
-
-4. **The resolver follows the chain to an actual address.** Since a CNAME just points to another name, the resolver now has to look *that* name up too, which eventually resolves to the numeric IP address of GitHub's servers.
-
-5. **The response comes back to the browser.** The resolver hands the final IP address back to the browser.
-
-6. **The browser connects and loads the page.** The browser opens a secure (HTTPS) connection directly to GitHub's server at that address, requests the page, and GitHub Pages serves back `index.html` for my site. The padlock appears once the HTTPS certificate for `myname.flyrank.ai` is confirmed valid.
-
-All of this typically happens in well under a second, and it happens every time someone loads the page — though browsers and resolvers cache the answer for a while so they don't have to repeat every step on every single visit.
+All of this happens in a fraction of a second, and browsers/resolvers cache the answer for a while so they're not repeating this whole chain on every single page load.
